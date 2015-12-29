@@ -311,7 +311,24 @@
             
             return $result;
         }
-   
+        
+        /**
+         * Browse into a tree node. 
+         * @param String $path The path to browse
+         * @param String $delimiter The delimiter for keys in path string
+         */ 
+        public function browse($path, $delimiter = '/')
+        {
+            $currentNode = $this;
+            
+            foreach (explode($delimiter, $path) as $key)
+            {
+                if (false === ($currentNode = $currentNode->childByKey($key)))
+                    break;
+            }
+            
+            return $currentNode;
+        }
     }
 
 ?>

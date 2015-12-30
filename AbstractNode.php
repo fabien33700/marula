@@ -296,7 +296,7 @@
                 }    
                 else
                 {
-                    $caption = $node->value();
+                    $caption = "[" . $node->key() . "] " . $node->value();
                 }                    
                     
                 $result = sprintf(self::DUMP_ROOT, $caption);

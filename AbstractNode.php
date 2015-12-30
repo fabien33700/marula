@@ -151,7 +151,12 @@
             }
         }
         
-        
+        /**
+         * Method to add several children node from a unidimensionnal array.
+         *   Raise a notice if a multidimensionnal array is used.
+         * @access public
+         * @param array $children 
+         */         
         public function addChildren(array $children)
         {    
             foreach ($children as $key => $value)
@@ -311,7 +316,39 @@
             
             return $result;
         }
-   
+        
+        /**
+         * Browse into a tree node. 
+         * @param String $path The path to browse
+         * @param String $delimiter The delimiter for keys in path string (default. "/")
+         * @param boolean $strict If true, stop browsing on first error. (default. true)
+         * @return AbstractNode|null
+         */ 
+        public function browse($path, $delimiter = '/', $strict = true)
+        {
+            $currentNode = $this;
+            
+            foreach (explode($delimiter, $path) as $key)
+            {   
+                if (!empty($key))
+                {
+                    if ($currentNode->childByKey($key) === false)
+                    {
+                        if ($strict)
+                        {
+                            trigger_error("Error encountered while parsing path : $path at $key. Aborting.", E_USER_WARNING);
+                            return false;
+                        }
+                        else
+                            break;
+                    }
+                    else
+                        $currentNode = $currentNode->childByKey($key);    
+                }
+            }
+            
+            return $currentNode;
+        }
     }
 
 ?>

@@ -4,7 +4,7 @@
      * 
      * This file stands for the Node class definition.
      * The purpose of Marula is to provide an implementation of
-     *   treenode paradigm.
+     *   treenode concept.
      * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
      * @version 0.1
      * @package classes

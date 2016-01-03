@@ -27,6 +27,13 @@
         const DUMP_ROOT = "----- %s -----\n";
         const DUMP_NODE = "%s[%s] => %s\n";
     
+        /*
+         * The tree node's arity (2 for binary tree, n for n-... tree)
+         * @static
+         * @access protected
+         * default value: 0 (none arity defined)
+         */
+        protected static $_arity = 0;
     
         /**
          * The node's key property.
@@ -87,6 +94,11 @@
             return $this->_parent;
         }
         
+        public function arity()
+        {
+            return static::$_arity;
+        }
+        
         /**
          * Method to check if the param node is a child of the current node.
          * @param AbstractNode $childNode the child to check
@@ -137,18 +149,29 @@
          * @return Node 
          */ 
         public function addChild(AbstractNode $childNode)
-        {      
-            if (!$this->hasChild($childNode))
-            {				
-                $childNode->setParent($this);
-                $this->_children[] = $childNode;
-           
-                return $childNode;       
-            } 
+        {  
+            if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
+            {
+                if (!$this->hasChild($childNode))
+                {				
+                    $childNode->setParent($this);
+                    $this->_children[] = $childNode;
+               
+                    return $childNode;       
+                } 
+                else
+                {
+                    return false;
+                }
+            }
             else
             {
-                return false;
+                $classFqn = get_class($this);
+                $className = substr($classFqn, strrpos($classFqn, NS) + 1);
+
+                throw new \RuntimeException("An instance of " . $className . " could not have more than " . $this->arity() . " children.");
             }
+            
         }
         
         /**

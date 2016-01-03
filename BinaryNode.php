@@ -12,20 +12,9 @@
 	namespace Marula;
 	
 	class BinaryNode extends AbstractNode {
-        protected static $_arity = 2;
         
-        // public function addChild(AbstractNode $childNode)
-        // {
-            // if ($childNode instanceof self)
-            // {
-                // return parent::addChild($childNode);
-            // }
-            // else
-            // {
-                // throw new \RuntimeException("A binary node can only have BinaryNode as children.");
-                // return false;
-            // }
-        // }
+        protected static $_arity = 2;
+   
         
         public function leftSibling()
         {

@@ -29,7 +29,13 @@
         const DUMP_ROOT = "----- %s -----\n";
         const DUMP_NODE = "%s[%s] => %s\n";
     
-    
+        /**
+         * The node class' arity. (default: 0, none arity)
+         * @access protected
+         * @static
+         */
+        protected static $_arity = 0; 
+         
         /**
          * The node's key property.
          * @access protected
@@ -272,6 +278,15 @@
         public function setValue($value)
         {
             $this->_value = $value;
+        }
+        
+        /**
+         * Accessor for arity property.
+         * @access public
+         */
+        public function arity()
+        {
+            return static::$_arity;
         }
         
         /**

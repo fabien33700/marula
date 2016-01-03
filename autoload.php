@@ -12,9 +12,9 @@
         $className   = array_pop($classArray);
         $classPrefix = implode(NS, $classArray);
         
-        if ($classPrefix !== LIB_PREFIX) return;
+        if (substr($classPrefix, 0, strlen(LIB_PREFIX)) !== LIB_PREFIX) return;
         
-        $classFilename = BASEDIR . DS . LIB_PREFIX . DS . $className . '.php';
+        $classFilename = BASEDIR . DS . $classPrefix . DS . $className . '.php';
         
         if (file_exists($classFilename))
             require $classFilename;

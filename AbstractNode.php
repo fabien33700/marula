@@ -29,6 +29,7 @@
         const DUMP_ROOT = "----- %s -----\n";
         const DUMP_NODE = "%s[%s] => %s\n";
     
+<<<<<<< HEAD
         /**
          * The node class' arity. (default: 0, none arity)
          * @access protected
@@ -36,6 +37,16 @@
          */
         protected static $_arity = 0; 
          
+=======
+        /*
+         * The tree node's arity (2 for binary tree, n for n-... tree)
+         * @static
+         * @access protected
+         * default value: 0 (none arity defined)
+         */
+        protected static $_arity = 0;
+    
+>>>>>>> master
         /**
          * The node's key property.
          * @access protected
@@ -95,6 +106,11 @@
             return $this->_parent;
         }
         
+        public function arity()
+        {
+            return static::$_arity;
+        }
+        
         /**
          * Method to check if the param node is a child of the current node.
          * @param AbstractNode $childNode the child to check
@@ -145,6 +161,7 @@
          * @return Node 
          */ 
         public function addChild(AbstractNode $childNode)
+<<<<<<< HEAD
         {
             // Ensuring that tree's arity will be applied into all its node.
             if ($childNode instanceof $this)
@@ -167,14 +184,36 @@
                 else
                 {
                     throw new \RuntimeException("An instance of " . ClassNameUtil::getClassName($this) . " could not have more than " . $this->arity() . " children.");
+=======
+        {  
+            if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
+            {
+                if (!$this->hasChild($childNode))
+                {				
+                    $childNode->setParent($this);
+                    $this->_children[] = $childNode;
+               
+                    return $childNode;       
+                } 
+                else
+                {
+>>>>>>> master
                     return false;
                 }
             }
             else
             {
+<<<<<<< HEAD
                 throw new \RuntimeException("The node to add must be an instance of " . ClassNameUtil::getClassName($this) . " or of one of its subclasses.");
                 return false;
+=======
+                $classFqn = get_class($this);
+                $className = substr($classFqn, strrpos($classFqn, NS) + 1);
+
+                throw new \RuntimeException("An instance of " . $className . " could not have more than " . $this->arity() . " children.");
+>>>>>>> master
             }
+            
         }
         
         /**

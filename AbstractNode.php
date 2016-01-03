@@ -10,6 +10,8 @@
      * @package classes
      */
 	namespace Marula;
+    
+    use Marula\Utils\ClassNameUtil;
 	
     /**
      * Node object. Has a key/value tuple, may have children (branch) or not (leaf), may have parent (except if it's root)
@@ -137,16 +139,34 @@
          * @return Node 
          */ 
         public function addChild(AbstractNode $childNode)
-        {      
-            if (!$this->hasChild($childNode))
-            {				
-                $childNode->setParent($this);
-                $this->_children[] = $childNode;
-           
-                return $childNode;       
-            } 
+        {
+            // Ensuring that tree's arity will be applied into all its node.
+            if ($childNode instanceof $this)
+            {
+                if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
+                {
+                    if (!$this->hasChild($childNode))
+                    {				
+                        $childNode->setParent($this);
+                        $this->_children[] = $childNode;
+                   
+                        return $childNode;       
+                    } 
+                    else
+                    {
+                        throw new \RuntimeException("Unable to add this node : it is already in.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new \RuntimeException("An instance of " . ClassNameUtil::getClassName($this) . " could not have more than " . $this->arity() . " children.");
+                    return false;
+                }
+            }
             else
             {
+                throw new \RuntimeException("The node to add must be an instance of " . ClassNameUtil::getClassName($this) . " or of one of its subclasses.");
                 return false;
             }
         }
@@ -203,6 +223,7 @@
             
             foreach($this->children() as $child)
             {  
+                // Casting the current child key to string if it's a numeric
                 $currKey = (is_numeric($child->key())) ? (string) $child->key() : $child->key();
 
                 if ($currKey === $searchKey) 

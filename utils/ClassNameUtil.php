@@ -2,16 +2,16 @@
 
     namespace Marula\Utils;
     
-    static class ClassNameUtil
+    abstract class ClassNameUtil
     {
-        public static function getClassName(Object &$obj)
+        public static function getClassName(&$obj)
         {
             $classFqn = self::getClassFqn($obj);
-            return substr($classFqn, strrpos($classFqn, NS) + 1);
+            return ($classFqn !== false) ? substr($classFqn, strrpos($classFqn, NS) + 1) : false;
         }
         
-        public static function getClassFqn(Object &$obj)
+        public static function getClassFqn(&$obj)
         {
-            return get_class($obj);
+            return (is_object($obj)) ? get_class($obj) : false;
         }        
     }

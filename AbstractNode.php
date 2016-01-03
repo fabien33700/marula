@@ -10,6 +10,8 @@
      * @package classes
      */
 	namespace Marula;
+    
+    use Marula\Utils\ClassNameUtil;
 	
     /**
      * Node object. Has a key/value tuple, may have children (branch) or not (leaf), may have parent (except if it's root)
@@ -27,6 +29,15 @@
         const DUMP_ROOT = "----- %s -----\n";
         const DUMP_NODE = "%s[%s] => %s\n";
     
+<<<<<<< HEAD
+        /**
+         * The node class' arity. (default: 0, none arity)
+         * @access protected
+         * @static
+         */
+        protected static $_arity = 0; 
+         
+=======
         /*
          * The tree node's arity (2 for binary tree, n for n-... tree)
          * @static
@@ -35,6 +46,7 @@
          */
         protected static $_arity = 0;
     
+>>>>>>> master
         /**
          * The node's key property.
          * @access protected
@@ -149,6 +161,30 @@
          * @return Node 
          */ 
         public function addChild(AbstractNode $childNode)
+<<<<<<< HEAD
+        {
+            // Ensuring that tree's arity will be applied into all its node.
+            if ($childNode instanceof $this)
+            {
+                if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
+                {
+                    if (!$this->hasChild($childNode))
+                    {				
+                        $childNode->setParent($this);
+                        $this->_children[] = $childNode;
+                   
+                        return $childNode;       
+                    } 
+                    else
+                    {
+                        throw new \RuntimeException("Unable to add this node : it is already in.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new \RuntimeException("An instance of " . ClassNameUtil::getClassName($this) . " could not have more than " . $this->arity() . " children.");
+=======
         {  
             if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
             {
@@ -161,15 +197,21 @@
                 } 
                 else
                 {
+>>>>>>> master
                     return false;
                 }
             }
             else
             {
+<<<<<<< HEAD
+                throw new \RuntimeException("The node to add must be an instance of " . ClassNameUtil::getClassName($this) . " or of one of its subclasses.");
+                return false;
+=======
                 $classFqn = get_class($this);
                 $className = substr($classFqn, strrpos($classFqn, NS) + 1);
 
                 throw new \RuntimeException("An instance of " . $className . " could not have more than " . $this->arity() . " children.");
+>>>>>>> master
             }
             
         }
@@ -226,6 +268,7 @@
             
             foreach($this->children() as $child)
             {  
+                // Casting the current child key to string if it's a numeric
                 $currKey = (is_numeric($child->key())) ? (string) $child->key() : $child->key();
 
                 if ($currKey === $searchKey) 
@@ -274,6 +317,15 @@
         public function setValue($value)
         {
             $this->_value = $value;
+        }
+        
+        /**
+         * Accessor for arity property.
+         * @access public
+         */
+        public function arity()
+        {
+            return static::$_arity;
         }
         
         /**

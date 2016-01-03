@@ -12,6 +12,11 @@
 	namespace Marula;
 	
 	class BinaryNode extends AbstractNode {
+<<<<<<< HEAD
+        
+        protected static $_arity = 2;
+   
+=======
         protected static $_arity = 2;
         
         public function addChild(AbstractNode $childNode)
@@ -26,6 +31,7 @@
                 return false;
             }
         }
+>>>>>>> master
         
         public function leftSibling()
         {

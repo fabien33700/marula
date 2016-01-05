@@ -29,6 +29,13 @@
         const DUMP_TAB  = "\t";
         const DUMP_ROOT = "----- %s -----\n";
         const DUMP_NODE = "%s[%s] => %s\n";
+        
+        /*
+         * Message for validation criterion
+         *   ex. "The value of this none must be a positive integer." or "[...] must be at least a 10 caracters long string."
+         */
+        const NOT_VALID_VALUE_MSG = "";
+         
     
         /*
          * The tree node's arity (2 for binary tree, n for n-... tree)
@@ -98,7 +105,7 @@
          * @access public
          * @return AbstractNode|null
          */
-        public function parent()
+        public final function parent()
         {
             return $this->_parent;
         }
@@ -109,12 +116,12 @@
          * @access public
          * @return boolean
          */       
-        public function hasChild(AbstractNode $childNode)
+        public final function hasChild(AbstractNode $childNode)
         {
             return (in_array($childNode, $this->_children, true));
         } 
         
-        public function hasKey($key)
+        public final function hasKey($key)
         {
             if (is_string($key) || is_integer($key))
             { 
@@ -130,7 +137,7 @@
          * @access public
          * @return boolean
          */ 
-        public function isRoot()
+        public final function isRoot()
         {
             return is_null($this->parent());
         }
@@ -141,7 +148,7 @@
          * @access public
          * @return boolean
          */             
-        public function isBranch()
+        public final function isBranch()
         {
             return (count($this->_children) > 0);
         }
@@ -152,7 +159,7 @@
          * @access public
          * @return boolean
          */ 
-        public function isLeaf()
+        public final function isLeaf()
         {
             return (count($this->_children) == 0);
         }
@@ -163,7 +170,7 @@
          * @access public
          * @return Node 
          */ 
-        public function addChild(AbstractNode $childNode)
+        public final function addChild(AbstractNode $childNode)
         {
             // Ensuring that tree's arity will be applied into all its node.
             if ($childNode instanceof $this)
@@ -209,7 +216,7 @@
          * @access public
          * @param array $children 
          */         
-        public function addChildren(array $children)
+        public final function addChildren(array $children)
         {    
             foreach ($children as $key => $value)
             {
@@ -227,7 +234,7 @@
          * @access public
          * @return generator
          */ 
-        public function children()
+        public final function children()
         {   
             for ($i = 0, $c = count($this->_children); $i < $c; $i++)
                 yield $this->_children[$i];
@@ -238,7 +245,7 @@
          * @access public
          * @param integer $id The index of the searched node. 
          */         
-        public function child($id)
+        public final function child($id)
         {
             return (isset($this->_children[$id])) ? $this->_children[$id] : null;
         }
@@ -248,7 +255,7 @@
          * @access protected
          * @param string $key The searched node's key.
          */
-        protected function keyPos($key)
+        protected final function keyPos($key)
         {
             $n = -1;
             foreach ($this->children() as $child)
@@ -262,7 +269,7 @@
          * @access public
          * @param string $searchKey The key of the searched node. 
          */      
-        public function childByKey($searchKey)
+        public final function childByKey($searchKey)
         {            
             foreach($this->children() as $child)
             {  
@@ -284,6 +291,8 @@
             {
                 $this->_parent = $parentNode;
             }
+            else
+                throw new \RuntimeException("The argument can be neither null, nor both parent and child of the current node.");
         }
         
         /**
@@ -291,7 +300,7 @@
          * @access public
          * @return string|integer The node's key.
          */ 
-        public function key()
+        public final function key()
         {
             return $this->_key;
         }
@@ -301,21 +310,33 @@
          * @access public
          * @return mixed The node's value.
          */ 
-        public function value()
+        public final function value()
         {
             return $this->_value;
         }
         
-        public function setValue($value)
+        public final function setValue($value)
         {
-            $this->_value = $value;
+            if ($this->checkValue($value))
+                $this->_value = $value;
+            
+            else
+                throw new \RuntimeException("The given value is not correct : \"" . static::NOT_VALID_VALUE_MSG . "\".");
+            
+            return $this;
+        }
+        
+        // can be override to perform value validation for a subclass
+        public function checkValue($value)
+        {
+            return true;
         }
         
         /**
          * Accessor for arity property.
          * @access public
          */
-        public function arity()
+        public final function arity()
         {
             return static::$_arity;
         }
@@ -335,7 +356,7 @@
                 $cursor = $cursor->parent();
             }
             $result[] = $cursor->key();
-            return implode($delimiter, $result);
+            return implode($delimiter, array_reverse($result));
         }
         
         /**
@@ -351,7 +372,7 @@
          * Static recursive method for dumping a tree node.
          * @return String Node's dump 
          */         
-        public static function dump(AbstractNode $node, $depth = 0)
+        public final static function dump(AbstractNode $node, $depth = 0)
         {            
             $tab = str_repeat(self::DUMP_TAB, $depth);
             
@@ -391,7 +412,7 @@
          * @param boolean $strict If true, stop browsing on first error. (default. true)
          * @return AbstractNode|null
          */ 
-        public function browse($path, $delimiter = '/', $strict = true)
+        public final function browse($path, $delimiter = '/', $strict = true)
         {
             $currentNode = $this;
             

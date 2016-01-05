@@ -13,6 +13,8 @@
 	
 	class BinaryNode extends AbstractNode {
         
+        const NOT_VALID_VALUE_MSG = "";
+        
         protected static $_arity = 2;
         
         public function leftSibling()

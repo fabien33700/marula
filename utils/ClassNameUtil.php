@@ -2,7 +2,7 @@
 
     namespace Marula\Utils;
     
-    abstract class ClassNameUtil
+    abstract class ClassnameUtil
     {
         public static function getClassName(&$obj)
         {
@@ -15,3 +15,5 @@
             return (is_object($obj)) ? get_class($obj) : false;
         }        
     }
+    
+?>

@@ -11,7 +11,8 @@
      */
 	namespace Marula;
     
-    use Marula\Utils\ClassNameUtil;
+    use Marula\Utils\ClassnameUtil,
+        Marula\Utils\NumericState;
 	
     /**
      * Node object. Has a key/value tuple, may have children (branch) or not (leaf), may have parent (except if it's root)
@@ -73,10 +74,15 @@
          */
         public function __construct($key, $value = null)
         {
-            if (is_string($key) || is_numeric($key))
-            {
+            if (is_string($key) || is_integer($key))
+            { 
+                if (NumericState::strIsInt($key)) $key = (int) $key;
                 $this->_key = $key;
-            }
+            } 
+            else
+                throw new \RuntimeException("A node key must be string or integer, [" . gettype($key) . "] used instead.");
+            
+                
 
             if (!is_null($value))
             {
@@ -107,6 +113,17 @@
         {
             return (in_array($childNode, $this->_children, true));
         } 
+        
+        public function hasKey($key)
+        {
+            if (is_string($key) || is_integer($key))
+            { 
+                $foundChild = $this->childByKey($key);
+                return ($foundChild instanceof AbstractNode);
+            } 
+            else
+                throw new \RuntimeException("A node key must be string or integer, [" . gettype($key) . "] used instead.");
+        }
         
         /**
          * Method to know if the current node is a root (no parent)
@@ -154,9 +171,15 @@
                 if (($this->arity() == 0) || (count($this->_children) < $this->arity()))
                 {
                     if (!$this->hasChild($childNode))
-                    {				
-                        $childNode->setParent($this);
-                        $this->_children[] = $childNode;
+                    {	
+                        $childKey = $childNode->key();
+                        $childNode->setParent($this);	
+                        
+                        if ($this->hasKey($childKey))
+                            $this->_children[$this->keyPos($childKey)] = $childNode;
+                        
+                        else                          
+                            $this->_children[] = $childNode;
                    
                         return $childNode;       
                     } 
@@ -194,7 +217,7 @@
                     trigger_error("The addChildren method can only add unidimensionnal array. Less-leveled array will be ignored.", E_USER_NOTICE);
                 
                 // Using PHP's late state binding to instanciate the right subclass of AbstractNode class
-                $this->addChild(new static($key, $value)); 
+                $this->addChild(new static((string) $key, $value)); 
                 
             }
         }
@@ -206,7 +229,7 @@
          */ 
         public function children()
         {   
-            for ($i = 0; $i < count($this->_children); $i++)
+            for ($i = 0, $c = count($this->_children); $i < $c; $i++)
                 yield $this->_children[$i];
         }
         
@@ -221,28 +244,33 @@
         }
         
         /**
+         * Get the position of the param key in the internal Node container.
+         * @access protected
+         * @param string $key The searched node's key.
+         */
+        protected function keyPos($key)
+        {
+            $n = -1;
+            foreach ($this->children() as $child)
+                if (strcmp($child->key(), $key) === 0) 
+                    return ++$n;
+        }
+        
+        /**
          * Get a child node by its key.
          *   Note that the method does not perform recursive searches.
          * @access public
          * @param string $searchKey The key of the searched node. 
          */      
         public function childByKey($searchKey)
-        {
-            $result = false;
-            
+        {            
             foreach($this->children() as $child)
             {  
-                // Casting the current child key to string if it's a numeric
-                $currKey = (is_numeric($child->key())) ? (string) $child->key() : $child->key();
-
-                if ($currKey === $searchKey) 
-                {
-                    $result = &$child;
-                    break;
-                }
+                if (strcmp($child->key(), $searchKey) === 0)
+                    return $child;
             }
             
-            return $result;
+            return false;
         }
         
         /**

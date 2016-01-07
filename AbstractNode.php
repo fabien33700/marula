@@ -360,6 +360,25 @@
             return implode($delimiter, array_reverse($result));
         }
         
+        
+        /**
+         * Method returning current node's depth in the tree hierarchy
+         * @return int
+         */         
+        public function depth()
+        {
+            $result = 0;
+            $cursor = $this;
+            
+            while (!is_null($cursor->parent()))
+            {
+                $result++;
+                $cursor = $cursor->parent();
+            }
+            
+            return $result;
+        }
+        
         /**
          * Special method for current node's representation.
          * @return String Node's dump 

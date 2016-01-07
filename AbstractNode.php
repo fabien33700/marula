@@ -350,12 +350,13 @@
         {
             $result = [];
             $cursor = $this;
-            while (!is_null($cursor->parent()))
+            
+            while (!is_null($cursor))
             {
                 $result[] = $cursor->key();
                 $cursor = $cursor->parent();
             }
-            $result[] = $cursor->key();
+
             return implode($delimiter, array_reverse($result));
         }
         

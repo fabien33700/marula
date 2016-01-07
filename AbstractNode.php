@@ -350,13 +350,33 @@
         {
             $result = [];
             $cursor = $this;
-            while (!is_null($cursor->parent()))
+            
+            while (!is_null($cursor))
             {
                 $result[] = $cursor->key();
                 $cursor = $cursor->parent();
             }
-            $result[] = $cursor->key();
+
             return implode($delimiter, array_reverse($result));
+        }
+        
+        
+        /**
+         * Method returning current node's depth in the tree hierarchy
+         * @return int
+         */         
+        public function depth()
+        {
+            $result = 0;
+            $cursor = $this;
+            
+            while (!is_null($cursor->parent()))
+            {
+                $result++;
+                $cursor = $cursor->parent();
+            }
+            
+            return $result;
         }
         
         /**

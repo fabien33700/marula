@@ -13,20 +13,22 @@
         {
             $this->_subject = $subjectNode;
             $this->_queue = new Fifo();
+            $this->execute();
         }
         
-        public function execute(AbstractNode $currentNode = null)
+        private function execute(AbstractNode $currentNode = null)
         {
             if (is_null($currentNode))
             {
                 $this->_queue->clear();
+                $this->_queue->put($this->_subject);
                 $this->execute($this->_subject);
             }
             else
             { 
                 foreach ($currentNode->children() as $child)
                 {
-                    if (!$this->queue()->isInto($child))
+                    if (!$this->_queue->isInto($child))
                         $this->_queue->put($child);
                     
                     if ($child->isBranch())
@@ -35,8 +37,8 @@
             }
         }
         
-        public function queue()
+        public function results()
         {
-            return $this->_queue;
+            return $this->_queue->generator();
         }
     }

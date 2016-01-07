@@ -26,6 +26,10 @@
         {
             return $this->child(1);
         }
+        
+        // Aliases
+        public function ls() { return $this->leftSibling(); }
+        public function rs() { return $this->rightSibling(); }
     }
     
 ?>

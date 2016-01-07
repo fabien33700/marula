@@ -26,17 +26,13 @@
             $this->_stack = [];
         }
         
-        public function __toString()
+        public function generator()
         {
-            $result = '';
-            
-            while (!$this->isEmpty())
-            {
-                $result .= $this->get()->path() . "<hr>";
-            }
-            
-            return $result;
+            while (!$this->isEmpty()) 
+                yield $this->get();
         }
+        
+        
     }
     
 ?>

@@ -367,7 +367,7 @@
          */         
         public function depth()
         {
-            $result = 0;
+            $result = 1;
             $cursor = $this;
             
             while (!is_null($cursor->parent()))

@@ -12,7 +12,8 @@
 	namespace Marula;
     
     use Marula\Utils\ClassnameUtil,
-        Marula\Utils\NumericState;
+        Marula\Utils\NumericState,
+        Marula\NodeIterator;
 	
     /**
      * Node object. Has a key/value tuple, may have children (branch) or not (leaf), may have parent (except if it's root)
@@ -24,11 +25,13 @@
 	abstract class AbstractNode
     {   
         /*
-         * Format strings for dump() method
+         * Format strings for self dumping (__toString)
+         *   1. %s (tabulation according to each node's depth: DUMP_NODE_TAB multiplied by the depth )
+         *   2. %s node's key
+         *   3. %s node's value
          */        
-        const DUMP_TAB  = "\t";
-        const DUMP_ROOT = "----- %s -----\n";
-        const DUMP_NODE = "%s[%s] => %s\n";
+        const DUMP_NODE_STR = "%s[%s]: %s\n";
+        const DUMP_NODE_TAB = '    ';
         
         /*
          * Message for validation criterion
@@ -385,45 +388,14 @@
          */ 
         public function __toString()
         {
-            return self::dump($this);
-        }
-        
-        /**
-         * Static recursive method for dumping a tree node.
-         * @return String Node's dump 
-         */         
-        public final static function dump(AbstractNode $node, $depth = 0)
-        {            
-            $tab = str_repeat(self::DUMP_TAB, $depth);
+            $result = "";
+            $iterator = new NodeIterator($this);
             
-            if ($depth == 0) 
-            {
-                if (is_null($node->value()) || empty($node->value()))
-                {
-                    $caption = $node->key();
-                }    
-                else
-                {
-                    $caption = "[" . $node->key() . "] " . $node->value();
-                }                    
-                    
-                $result = sprintf(self::DUMP_ROOT, $caption);
-            }      
-            else if ($node->isLeaf())
-            {
-                $result = sprintf(self::DUMP_NODE, $tab, $node->key(), $node->value());
-            }  
-            else
-                $result = '';
-            
-            foreach ($node->children() as $child)
-            {
-                $dumpValue = $child->value() . (($child->isBranch()) ? "\n" . self::dump($child, $depth + 1) : "");
-                $result.= sprintf(self::DUMP_NODE, $tab, $child->key(), $dumpValue);
-            }                   
+            foreach ($iterator->results() as $item)
+                $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $item->key(), $item->value());
             
             return $result;
-        }
+        }        
         
         /**
          * Browse into a tree node. 

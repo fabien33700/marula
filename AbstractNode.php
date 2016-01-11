@@ -5,7 +5,7 @@
 	 * 	 coded with and for PHP 5.6+
      * Treenodes algorithm implementation for PHP 
      *   (first of all, for personnal learning and skill improving purposes)
-     * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
+     * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
 	namespace Marula;
 
@@ -17,8 +17,8 @@
      * The AbstractNode class represents a tree node object.
      *  It must have a key, may have a value, a parent (or not) and may have children.
      *  This is an abstract class, must be inherited to use.
+     *
      * @package Marula
-     * @package classes
      */
     abstract class AbstractNode
     {
@@ -482,5 +482,3 @@
             return $currentNode;
         }
     }
-
-?>

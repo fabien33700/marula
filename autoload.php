@@ -31,5 +31,3 @@
         if (file_exists($classFilename))
             require $classFilename;
     });
-
-?>

@@ -5,7 +5,7 @@
 	 * 	 coded with and for PHP 5.6+
      * Treenodes algorithm implementation for PHP 
      *   (first of all, for personnal learning and skill improving purposes)
-     * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
+     * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
 	namespace Marula;
 
@@ -17,7 +17,6 @@
      *      Use setLs(...) and setRs(...) method to change left or right sibling.
      *
      * @package Marula
-     * @package classes
      */
 	class BinaryNode extends AbstractNode {
         protected static $_arity = 2;
@@ -31,5 +30,3 @@
         public function setLs($newLs) { $this->setChild(self::BIN_LS, $newLs); }
         public function setRs($newRs) { $this->setChild(self::BIN_RS, $newRs); }
     }
-    
-?>

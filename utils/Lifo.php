@@ -5,7 +5,7 @@
 	 * 	 coded with and for PHP 5.6+
      * Treenodes algorithm implementation for PHP 
      *   (first of all, for personnal learning and skill improving purposes)
-     * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
+     * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
     namespace Marula\Utils;
 
@@ -13,7 +13,6 @@
      * The Lifo class provides an implementation of a Last-in First-out queue.
      *
      * @package Marula
-     * @package classes
     */
     class Lifo extends AbstractQueue
     {
@@ -33,5 +32,3 @@
             array_unshift($this->_stack, $obj);
         }
     }
-    
-?>

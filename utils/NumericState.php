@@ -23,5 +23,3 @@
             return preg_match(self::PCRE_CHECK_INT, $numStr);
         }
     }
-    
-?>

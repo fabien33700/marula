@@ -32,5 +32,3 @@
             return (is_object($obj)) ? get_class($obj) : false;
         }        
     }
-
-?>

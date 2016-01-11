@@ -5,7 +5,7 @@
 	 * 	 coded with and for PHP 5.6+
      * Treenodes algorithm implementation for PHP 
      *   (first of all, for personnal learning and skill improving purposes)
-     * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
+     * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
     namespace Marula\Utils;
 
@@ -13,7 +13,6 @@
      * The Queue interface defines the standard behaviour of all subclasses of AbstractQueue.
      *
      * @package Marula
-     * @package classes
      */
     interface Queue
     {
@@ -35,5 +34,3 @@
          */
         public function isEmpty();
     }
-    
-?>

@@ -9,8 +9,8 @@
      */
 	namespace Marula;
 
-    use Marula\Utils\ClassnameUtil,
-        Marula\Utils\NumericState,
+    use Marula\Utils\Classname,
+        Marula\Utils\Numeric,
         Marula\NodeIterator;
 
     /**
@@ -85,7 +85,7 @@
             if (is_string($key) || is_integer($key))
             {
                 // cast string to int if its value represents a valid integer
-                if (NumericState::strIsInt($key)) $key = (int) $key;
+                if (Numeric::strIsInt($key)) $key = (int) $key;
 
                 $this->_key = $key;
             }
@@ -182,7 +182,7 @@
          * @access public
          * @return Node
          */
-        public final function addChild(AbstractNode $childNode)
+        public function addChild(AbstractNode $childNode)
         {
             // Ensuring that tree's arity will be applied into all its node.
             if ($childNode instanceof $this)
@@ -273,7 +273,7 @@
          * @param integer $id Id of child to change
          * @param AbstractNode $newChild The newer child.
          */
-        public final function setChild($id, $newChild)
+        public function setChild($id, $newChild)
         {
             if (!$this->hasChild($newChild))
             {

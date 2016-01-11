@@ -9,10 +9,8 @@
      */
     namespace Marula\Utils;
 
-    abstract class NumericState
+    abstract class Numeric
     {
-        const PCRE_CHECK_INT   = "/^([+-]?)([0-9]+)$/mi";
-
         /**
          * Check if a string represents a valid integer number.
          * @param $numStr the string to check
@@ -20,6 +18,6 @@
          */         
         public static function strIsInt($numStr)
         {
-            return preg_match(self::PCRE_CHECK_INT, $numStr);
+            return (is_integer($numStr) || (is_string($numStr) && ctype_digit($numStr)));
         }
     }

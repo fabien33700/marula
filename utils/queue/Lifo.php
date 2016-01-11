@@ -7,7 +7,7 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-    namespace Marula\Utils;
+    namespace Marula\Utils\Queue;
 
     /**
      * The Lifo class provides an implementation of a Last-in First-out queue.

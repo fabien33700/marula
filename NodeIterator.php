@@ -9,7 +9,7 @@
      */
 	namespace Marula;
 
-    use Marula\Utils\Fifo;
+    use Marula\Utils\Queue\Fifo;
 
     /**
      * The NodeIterator class provides an iterator for all AbstractNode subclasses' instance. 

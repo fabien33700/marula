@@ -1,16 +1,21 @@
 <?php
+
     /**
-     * Node class file, Marula Node Objet
-     * 
-     * This file stands for the Node class definition.
-     * The purpose of Marula is to provide an implementation of
-     *   treenode paradigm.
+	 * Marula Library, use easily treenodes in PHP !
+	 * 	 coded with and for PHP 5.6+
+     * Treenodes algorithm implementation for PHP 
+     *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
-     * @version 0.1
-     * @package classes
      */
 	namespace Marula;
-	
-	class Node extends AbstractNode {}
+
+    /**
+     * The Node class represents a tree node object.
+     *   This is the most standard node class of Marula, directly inherited from AbstractNode.
+     * 
+     * @package Marula
+     * @package classes
+     */
+    class Node extends AbstractNode {}
     
 ?>

@@ -1,35 +1,35 @@
 <?php
+
     /**
-     * Node class file, Marula Node Objet
-     * 
-     * This file stands for the Node class definition.
-     * The purpose of Marula is to provide an implementation of
-     *   treenode paradigm.
+	 * Marula Library, use easily treenodes in PHP !
+	 * 	 coded with and for PHP 5.6+
+     * Treenodes algorithm implementation for PHP 
+     *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
-     * @version 0.1
-     * @package classes
      */
 	namespace Marula;
-	
+
+    /**
+     * The BinaryNode subclass represents a binary-tree node object.
+     *  A BinaryNode object could have at most 2 children, a left and a right one.
+     *      ls() -> get the left sibling (first child)
+     *      rs() -> get the right sibling (second child)
+     *      Use setLs(...) and setRs(...) method to change left or right sibling.
+     *
+     * @package Marula
+     * @package classes
+     */
 	class BinaryNode extends AbstractNode {
-        
-        const NOT_VALID_VALUE_MSG = "";
-        
         protected static $_arity = 2;
         
-        public function leftSibling()
-        {
-            return $this->child(0);
-        }
+        const BIN_LS = 0;
+        const BIN_RS = 1;
         
-        public function rightSibling()
-        {
-            return $this->child(1);
-        }
+        public function ls() { return $this->child(self::BIN_LS); }
+        public function rs() { return $this->child(self::BIN_RS); }
         
-        // Aliases
-        public function ls() { return $this->leftSibling(); }
-        public function rs() { return $this->rightSibling(); }
+        public function setLs($newLs) { $this->setChild(self::BIN_LS, $newLs); }
+        public function setRs($newRs) { $this->setChild(self::BIN_RS, $newRs); }
     }
     
 ?>

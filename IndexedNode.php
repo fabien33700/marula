@@ -58,38 +58,8 @@
             }
         }
         
-        /**
-         * Get a child node by its key.
-         *   Note that the method does not perform recursive searches.
-         * @access public
-         * @param integer $searchKey The key of the searched node.
-         */
-        public function childByKey($searchKey)
-        {
-            foreach($this->children() as $child)
-            {
-                if ($child->key() === $searchKey)
-                    return $child;
-            }
-
-            return false;
-        }
-        
-        /**
-         * Get the position of the param key in the internal Node container.
-         * @access protected
-         * @param integer $key The searched node's key.
-         */
-        protected function keyPos($key)
-        {
-            $n = -1;
-            foreach ($this->children() as $child)
-                if ($child->key() === $key)
-                    return ++$n;
-        }
-        
         // à définir
-        public function search($key)
+        /*public function search($key)
         {    
             if (is_integer($key)) 
             {
@@ -106,5 +76,5 @@
                 throw new \Exception("The key must be an integer.");
                 return false;
             }
-        }
+        }*/
     }

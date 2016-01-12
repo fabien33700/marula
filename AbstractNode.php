@@ -291,11 +291,11 @@
          * @access protected
          * @param string $key The searched node's key.
          */
-        protected function keyPos($key)
+        protected final function keyPos($key)
         {
             $n = -1;
             foreach ($this->children() as $child)
-                if (strcmp($child->key(), $key) === 0)
+                if ($child->key() === $key)
                     return ++$n;
         }
 
@@ -305,11 +305,11 @@
          * @access public
          * @param string $searchKey The key of the searched node.
          */
-        public function childByKey($searchKey)
+        public final function childByKey($searchKey)
         {
             foreach($this->children() as $child)
             {
-                if (strcmp($child->key(), $searchKey) === 0)
+                if ($child->key() === $searchKey)
                     return $child;
             }
 

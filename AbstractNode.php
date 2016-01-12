@@ -131,7 +131,7 @@
          * @access public
          * @return boolean
          */
-        public final function hasKey($key)
+        public function hasKey($key)
         {
             if (is_string($key) || is_integer($key))
             {
@@ -291,7 +291,7 @@
          * @access protected
          * @param string $key The searched node's key.
          */
-        protected final function keyPos($key)
+        protected function keyPos($key)
         {
             $n = -1;
             foreach ($this->children() as $child)
@@ -305,7 +305,7 @@
          * @access public
          * @param string $searchKey The key of the searched node.
          */
-        public final function childByKey($searchKey)
+        public function childByKey($searchKey)
         {
             foreach($this->children() as $child)
             {
@@ -440,8 +440,14 @@
             $result = "";
             
             // Invoke a new NodeIterator
-            $iterator = new NodeIterator($this);
-            
+            try {
+               $iterator = new NodeIterator($this); 
+            }
+            catch (\RuntimeException $e)
+            {
+                return sprintf('[/!\] %s: %s', Classname::getClassName($e), $e->getMessage());
+            }    
+   
             // Browse the current node
             foreach ($iterator->items() as $item)
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $item->key(), $item->value());

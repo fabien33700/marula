@@ -9,15 +9,11 @@
      */
 	namespace Marula;
 
-    use Marula\AbstractNode,
-        Marula\NodeIterator;
-
     /**
-     * The IndexedNode class represents a tree node with an integer key.
+     * The BinaryIndexNode is like BinaryNode and IndexedNode  
      *
      * @package Marula
      */
-    class IndexedNode extends AbstractNode 
-    {
+	class BinaryIndexedNode extends BinaryNode {
         protected static $_intKey = true;
     }

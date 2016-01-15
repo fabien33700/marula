@@ -1,4 +1,4 @@
-<?php
+<?php 
 
     /**
 	 * Marula Library, use easily treenodes in PHP !
@@ -9,15 +9,16 @@
      */
 	namespace Marula;
 
-    use Marula\AbstractNode,
-        Marula\NodeIterator;
-
     /**
-     * The IndexedNode class represents a tree node with an integer key.
+     * The IterationMethod enum class provides consts for the different iteration methods 
      *
      * @package Marula
      */
-    class IndexedNode extends AbstractNode 
+    abstract class IterationMethod
     {
-        protected static $_intKey = true;
+        const PREFIX = 0;
+        const INFIX  = 1;
+        const SUFFIX = 2;
+        
+        const __default = self::PREFIX;
     }

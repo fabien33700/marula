@@ -29,4 +29,21 @@
         
         public function setLs($newLs) { $this->setChild(self::BIN_LS, $newLs); }
         public function setRs($newRs) { $this->setChild(self::BIN_RS, $newRs); }
+        
+        public function __construct($key, $value = null)
+        {
+            parent::__construct($key, $value);
+            $this->_children[self::BIN_LS] = null;
+            $this->_children[self::BIN_RS] = null;
+        }
+        
+        
+        /**
+         * Special method for current node's representation.
+         * @return String Node's dump
+         */
+        /*public function __toString()
+        {
+
+        }*/
     }

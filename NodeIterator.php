@@ -50,7 +50,7 @@
          */
         public function __construct(AbstractNode &$subjectNode)
         {
-            self::$_iter_max = (int) ini_get('xdebug.max_nesting_level');
+            self::$_iter_max = (int) ini_get('xdebug.max_nesting_level') - 10;
             $this->_subject = $subjectNode;
             $this->_queue = new Fifo();
             $this->execute();
@@ -61,7 +61,7 @@
          * @access protected
          * @param Marula\AbstractNode The current node (null on the first iteration)
          */ 
-        protected final function execute(AbstractNode $currentNode = null)
+        protected function execute(AbstractNode $currentNode = null)
         {
             // when the method has been just called by __construct()
             if (is_null($currentNode))
@@ -79,11 +79,11 @@
             // when the method has just called itself
             else
             {
-                if (self::$_iter_count++ >= (self::$_iter_max)-10)
+                /*if (self::$_iter_count++ >= self::$_iter_max)
                 {
-                    throw new \RuntimeException("Too many loops done, maybe an infinite loop ? Aborting.");
+                    throw new \RuntimeException("Too many loops done. Aborting, while parsing [" . $this->_subject->key() . "].");
                     return;
-                }
+                }*/
                 // for each child of the current node
                 foreach ($currentNode->children() as $child)
                 {
@@ -103,7 +103,7 @@
          * @access public
          * @return generator
          */ 
-        public function items()
+        public final function items()
         {
             // return a queue's generator
             return $this->_queue->generator();

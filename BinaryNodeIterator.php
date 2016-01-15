@@ -22,9 +22,13 @@
      */
     class BinaryNodeIterator extends NodeIterator
     {
+        /**
+         * Search method constants
+         */
         const M_PREFIX = 0;
         const M_INFIX  = 1;
         const M_SUFFIX = 2;
+
         /**
          * The queue used to stack items while browsing
          * @access protected
@@ -45,6 +49,12 @@
          * @var integer
          */
         protected $_method;
+        
+        /**
+         * {@inheritDoc}
+         * @param integer $method The search method (M_PREFIX by default)
+         * Acts like NodeIterator's constructor, and checks if the subject is at least a binary node.
+         */
 
         public function __construct(AbstractNode &$subjectNode, $method = self::M_PREFIX)
         {
@@ -57,20 +67,29 @@
                 throw new \RuntimeException("BinaryNodeIterator needs an instance of BinaryNode or of its subclasses as subject.");
         }
         
+        
+        /**
+         * Accessor for the search method
+         * @access public
+         * @return integer
+         */
         public function method()
         {
             return $this->_method;
         }
-        
+
+        /**
+         * Mutator for the search method
+         * @access public
+         * @param integer $method
+         */
         public function setMethod($method)
         {
             $this->_method = $method;
         }
 
         /**
-         * The recursive method execute(), automatically called by __construct
-         * @access protected
-         * @param Marula\AbstractNode The current node (null on the first iteration)
+         * {@inheritDoc}
          */ 
         protected function execute(AbstractNode $currentNode = null)
         {
@@ -84,7 +103,7 @@
             }
             // when the method has just called itself
             else
-            {   
+            {
                 if ($this->method() === self::M_PREFIX) $this->_queue->put($currentNode);
                 
                 if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());

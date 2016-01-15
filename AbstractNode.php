@@ -108,7 +108,11 @@
             $this->_parent = null;
         }
         
-        public static function checkKeyType($key)
+        /**
+         * Check if the key's type is ok.
+         * @param mixed $key
+         */
+        protected static function checkKeyType($key)
         {
             return (static::$_intKey) ? is_integer($key) : is_string($key);
         }
@@ -276,7 +280,7 @@
         {
             return (isset($this->_children[$id])) ? $this->_children[$id] : null;
         }
-        
+
         /**
          * Set a new child node.
          * @access public

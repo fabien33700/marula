@@ -19,5 +19,6 @@
      */
     class IndexedNode extends AbstractNode 
     {
+        // _intKey switch on true, so an IndexedNode will accept only integer as key.
         protected static $_intKey = true;
     }

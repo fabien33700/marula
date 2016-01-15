@@ -39,9 +39,6 @@
          * @var Marula\AbstractNode
          */
         protected $_subject;
-        
-        protected static $_iter_count;
-        protected static $_iter_max;
 
         /**
          * The class' constructor.
@@ -50,7 +47,6 @@
          */
         public function __construct(AbstractNode &$subjectNode)
         {
-            self::$_iter_max = (int) ini_get('xdebug.max_nesting_level') - 10;
             $this->_subject = $subjectNode;
             $this->_queue = new Fifo();
             $this->execute();
@@ -68,8 +64,6 @@
             {
                 $this->_queue->clear();
                 
-                self::$_iter_count = 0;
-                
                 // add the root to the queue
                 $this->_queue->put($this->_subject);
                 
@@ -79,11 +73,6 @@
             // when the method has just called itself
             else
             {
-                /*if (self::$_iter_count++ >= self::$_iter_max)
-                {
-                    throw new \RuntimeException("Too many loops done. Aborting, while parsing [" . $this->_subject->key() . "].");
-                    return;
-                }*/
                 // for each child of the current node
                 foreach ($currentNode->children() as $child)
                 {

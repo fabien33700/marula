@@ -11,7 +11,6 @@
 
     use Marula\NodeIterator,
         Marula\BinaryNode,
-        Marula\IterationMethod,
         Marula\Utils\Queue\Fifo;
 
     /**
@@ -23,6 +22,9 @@
      */
     class BinaryNodeIterator extends NodeIterator
     {
+        const M_PREFIX = 0;
+        const M_INFIX  = 1;
+        const M_SUFFIX = 2;
         /**
          * The queue used to stack items while browsing
          * @access protected
@@ -44,7 +46,7 @@
          */
         protected $_method;
 
-        public function __construct(AbstractNode &$subjectNode, $method = IterationMethod::__default)
+        public function __construct(AbstractNode &$subjectNode, $method = self::M_PREFIX)
         {
             if ($subjectNode instanceof BinaryNode)
             {
@@ -76,38 +78,22 @@
             if (is_null($currentNode))
             {
                 $this->_queue->clear();
-                
-                self::$_iter_count = 0;
-                
+
                 // first recursion
                 $this->execute($this->_subject);
             }
             // when the method has just called itself
             else
             {   
-                switch ($this->method())
-                {
-                    case (IterationMethod::PREFIX):
-                        $this->_queue->put($currentNode);
-                        if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());
-                        if (!is_null($currentNode->rs())) $this->execute($currentNode->rs());
-                        
-                    break;
-                    
-                    case (IterationMethod::INFIX):
-                        if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());
-                        $this->_queue->put($currentNode);
-                        if (!is_null($currentNode->rs())) $this->execute($currentNode->rs());
-                    
-                    break;
-
-                    case (IterationMethod::SUFFIX):
-                        if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());
-                        if (!is_null($currentNode->rs())) $this->execute($currentNode->rs());
-                        $this->_queue->put($currentNode);
-                        
-                    break;                    
-                }
+                if ($this->method() === self::M_PREFIX) $this->_queue->put($currentNode);
+                
+                if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());
+                
+                if ($this->method() === self::M_INFIX) $this->_queue->put($currentNode);
+                
+                if (!is_null($currentNode->rs())) $this->execute($currentNode->rs());
+                
+                if ($this->method() === self::M_SUFFIX) $this->_queue->put($currentNode);
             }
         }
     }

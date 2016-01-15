@@ -10,7 +10,6 @@
 	namespace Marula;
 
     use Marula\Utils\Classname,
-        Marula\Utils\Numeric,
         Marula\NodeIterator;
 
     /**
@@ -44,6 +43,14 @@
          * default value: 0 (none)
          */
         protected static $_arity = 0;
+
+        /*
+         * The intKey switch (true for integer key, false for string)
+         * @static
+         * @access protected
+         * default value: true
+         */
+        protected static $_intKey = false;
 
         /**
          * The node's key property.
@@ -81,17 +88,14 @@
          */
         public function __construct($key, $value = null)
         {
-            // $key param must be integer or string
-            if (is_string($key) || is_integer($key))
+            // check key type 
+            if (self::checkKeyType($key))
             {
-                // cast string to int if its value represents a valid integer
-                if (Numeric::strIsInt($key)) $key = (int) $key;
-
                 $this->_key = $key;
             }
             else
             {
-                throw new \RuntimeException("A node key must be string or integer, [" . gettype($key) . "] used instead.");
+                throw new \RuntimeException("This node key must be " . ((static::$_intKey) ? "an integer" : "a string"). ".");
             }
 
             // Basic initialization
@@ -102,6 +106,11 @@
 
             $this->_children = [];
             $this->_parent = null;
+        }
+        
+        public static function checkKeyType($key)
+        {
+            return (static::$_intKey) ? is_integer($key) : is_string($key);
         }
 
         /**
@@ -131,16 +140,16 @@
          * @access public
          * @return boolean
          */
-        public final function hasKey($key)
+        public function hasKey($key)
         {
-            if (is_string($key) || is_integer($key))
+            if (self::checkKeyType($key))
             {
                 $foundChild = $this->childByKey($key);
                 return ($foundChild instanceof AbstractNode);
             }
             else
             {
-                throw new \RuntimeException("A node key must be string or integer, [" . gettype($key) . "] used instead.");
+                throw new \RuntimeException("This node key must be " . ((static::$_intKey) ? "an integer" : "a string"). ".");
             }
         }
 
@@ -252,9 +261,10 @@
          * @return generator
          */
         public final function children()
-        {
+        {   
             for ($i = 0, $c = count($this->_children); $i < $c; $i++)
-                yield $this->_children[$i];
+                if (isset($this->_children[$i])) 
+                    yield $this->_children[$i];
         }
 
         /**
@@ -295,7 +305,7 @@
         {
             $n = -1;
             foreach ($this->children() as $child)
-                if (strcmp($child->key(), $key) === 0)
+                if ($child->key() === $key)
                     return ++$n;
         }
 
@@ -309,7 +319,7 @@
         {
             foreach($this->children() as $child)
             {
-                if (strcmp($child->key(), $searchKey) === 0)
+                if ($child->key() === $searchKey)
                     return $child;
             }
 
@@ -395,7 +405,7 @@
          * @param String $delimiter The delimiter of the path (/ by default).
          * @return String
          */
-        public function path($delimiter = '/')
+        public final function path($delimiter = '/')
         {
             $result = [];
             $cursor = $this;
@@ -411,6 +421,22 @@
             }
 
             return implode($delimiter, array_reverse($result));
+        }
+
+        /**
+         * Method returning the root of the entire treenode.
+         * @return Marula\AbstractNode|null
+         */
+        public final function root()
+        {
+            $cursor = $this;
+            
+            while(!is_null($cursor->parent()))
+            {
+                $cursor = $cursor->parent(); 
+            }
+                
+            return $cursor;           
         }
 
         /**
@@ -440,8 +466,14 @@
             $result = "";
             
             // Invoke a new NodeIterator
-            $iterator = new NodeIterator($this);
-            
+            try {
+               $iterator = new NodeIterator($this); 
+            }
+            catch (\RuntimeException $e)
+            {
+                return sprintf('[/!\] %s: %s', Classname::getClassName($e), $e->getMessage());
+            }    
+   
             // Browse the current node
             foreach ($iterator->items() as $item)
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $item->key(), $item->value());

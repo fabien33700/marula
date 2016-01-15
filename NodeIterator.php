@@ -57,7 +57,7 @@
          * @access protected
          * @param Marula\AbstractNode The current node (null on the first iteration)
          */ 
-        protected final function execute(AbstractNode $currentNode = null)
+        protected function execute(AbstractNode $currentNode = null)
         {
             // when the method has been just called by __construct()
             if (is_null($currentNode))
@@ -92,7 +92,7 @@
          * @access public
          * @return generator
          */ 
-        public function items()
+        public final function items()
         {
             // return a queue's generator
             return $this->_queue->generator();

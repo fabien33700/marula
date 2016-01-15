@@ -9,7 +9,7 @@
      */
     namespace Marula\Utils;
 
-    abstract class ClassnameUtil
+    abstract class Classname
     {
         /**
          * Get class name of the argument object.
@@ -19,7 +19,17 @@
         public static function getClassName(&$obj)
         {
             $classFqn = self::getClassFqn($obj);
-            return ($classFqn !== false) ? substr($classFqn, strrpos($classFqn, NS) + 1) : false;
+            
+            if (!$classFqn) return false;
+            
+            if (strpos($classFqn, NS) !== false)
+            {
+                return substr($classFqn, strrpos($classFqn, NS) + 1);
+            }
+            else
+            {
+                return $classFqn;
+            }  
         }
 
         /**

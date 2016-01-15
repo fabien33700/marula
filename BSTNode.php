@@ -26,7 +26,7 @@
         public function search($key)
         {
             $treeRoot = $this->root();
-            $searchIterator = new BinaryNodeIterator($treeRoot, IterationMethod::INFIX);
+            $searchIterator = new BinaryNodeIterator($treeRoot, BinaryNodeIterator::M_INFIX);
             
             foreach ($searchIterator->items() as $item)
                 if ($item->key() === $key) return $item;
@@ -72,24 +72,4 @@
                 }
             }  
         }
-        /*public function addChild
-        {
-            if ($childNode->key() < $this->key())
-            {
-                $childNode->setParent($this);
-                
-                if (is_null($this->ls())) 
-                $this->child(self::BIN_LS)->set
-            }
-            else if ($childNode->key() > $this->key())
-            {
-                $childNode->setParent($this);
-                $this->setRs($childNode);
-            }
-            else
-            {
-                throw new \Exception("A binary search tree node and its child cannot have the same key.");
-                return false;
-            }
-        }*/
     }

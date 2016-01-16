@@ -16,6 +16,9 @@
      */
 	class BinaryIndexedNode extends BinaryNode {
 
-        // _intKey switch on true, so a BinaryIndexedNode will accept only integer as key.
+        /**
+         * {@inheritDoc}
+         *   _intKey switch on true, so a BinaryIndexedNode will accept only integer as key.
+         */
         protected static $_intKey = true;
     }

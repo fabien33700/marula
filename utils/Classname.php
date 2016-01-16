@@ -9,6 +9,12 @@
      */
     namespace Marula\Utils;
 
+    /**
+     * The Classname class is an utility class to provides methods for 
+     *   retrieving classes name or FQN.
+     * 
+     * @package Marula\Utils
+     */
     abstract class Classname
     {
         /**

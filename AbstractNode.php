@@ -21,34 +21,36 @@
      */
     abstract class AbstractNode
     {
-        /*
+        /**
          * Format strings for self dumping (__toString)
          *   1. %s (tabulation according to each node's depth: DUMP_NODE_TAB multiplied by the depth )
          *   2. %s node's key
          *   3. %s node's value
          */
         const DUMP_NODE_STR = "%s[%s]: %s\n";
+        
+        /**
+         * Tab string for self dumping 
+         */
         const DUMP_NODE_TAB = '    ';
 
-        /*
+        /**
          * Message for validation criterion
          *   ex. "The value must be a positive integer." or "[...] must be at least a 10-caracters long string."
          */
         const NOT_VALID_VALUE_MSG = "";
 
-        /*
+        /**
          * The tree's arity (2 for binary tree, n for n-... tree)
          * @static
          * @access protected
-         * default value: 0 (none)
          */
         protected static $_arity = 0;
 
-        /*
+        /**
          * The intKey switch (true for integer key, false for string)
          * @static
          * @access protected
-         * default value: true
          */
         protected static $_intKey = false;
 
@@ -120,7 +122,7 @@
         /**
          * The node's parent accessor.
          * @access public
-         * @return AbstractNode|null
+         * @return Marula\AbstractNode|null
          */
         public final function parent()
         {
@@ -193,6 +195,7 @@
          * Method to add a child node to the current node.
          *   It returns the child node after proceeding.
          * @access public
+         * @param AbstractNode|null
          * @return Node
          */
         public function addChild(AbstractNode $childNode)
@@ -367,6 +370,12 @@
             return $this->_value;
         }
 
+        /**
+         * Mutator for the value property.
+         * Perform a check of the value with checkValue() method.
+         * @param mixed $value
+         * @return Marula\AbstractNode|null The current node object.
+         */
         public final function setValue($value)
         {
             if ($this->checkValue($value))
@@ -491,7 +500,7 @@
          * @param String $path The path to browse
          * @param String $delimiter The delimiter for keys in path string (default. "/")
          * @param boolean $strict If true, stop browsing on first error. (default. true)
-         * @return AbstractNode|null
+         * @return Marula\AbstractNode|null
          */
         public final function browse($path, $delimiter = '/', $strict = true)
         {

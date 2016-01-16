@@ -9,6 +9,11 @@
      */
     namespace Marula\Utils;
 
+    /**
+     * The Numeric class is an utility class to provides methods for numeric operation.
+     * 
+     * @package Marula\Utils
+     */
     abstract class Numeric
     {
         /**

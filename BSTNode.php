@@ -47,6 +47,7 @@
          * {@inheritDoc}
          * !! Overloaded method 
          *   Indicate to not use addChild method in BSTNode.
+         * @param AbstractNode $childNode The child node to add.
          */
         public function addChild(AbstractNode $childNode)
         {

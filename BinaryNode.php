@@ -20,7 +20,10 @@
      */
 	class BinaryNode extends AbstractNode {
 
-        //The BinaryNode's arity is set to 2.
+        /**
+         * {@inheritDoc}
+         *   The BinaryNode's arity is set to 2.
+         */
         protected static $_arity = 2;
 
         /**
@@ -73,6 +76,9 @@
          * {@inheritDoc}
          * Initialize left and right sibling to null to prevent
          *   errors on __toString. (children() generator bugs on item #0 if it isn't initialized.
+         * @access public
+         * @param string|integer $key Key for the new node
+         * @param mixed $value Value for the new node (default. null)
          */
         public function __construct($key, $value = null)
         {

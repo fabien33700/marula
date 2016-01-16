@@ -26,6 +26,7 @@
 
         /**
          * {@inheritDoc}
+         * @param mixed $obj Object to put into the queue.
          */
         public function put($obj)
         {

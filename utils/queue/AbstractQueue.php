@@ -16,7 +16,7 @@
      */
     abstract class AbstractQueue implements Queue
     {
-        /*
+        /**
          * The stack container for the queue
          * @var array
          */

@@ -52,10 +52,10 @@
         
         /**
          * {@inheritDoc}
+         * @param AbstractNode $subject The subject node
          * @param integer $method The search method (M_PREFIX by default)
          * Acts like NodeIterator's constructor, and checks if the subject is at least a binary node.
          */
-
         public function __construct(AbstractNode &$subjectNode, $method = self::M_PREFIX)
         {
             if ($subjectNode instanceof BinaryNode)
@@ -90,6 +90,7 @@
 
         /**
          * {@inheritDoc}
+         * @param AbstractNode The current node (null on the first iteration)
          */ 
         protected function execute(AbstractNode $currentNode = null)
         {

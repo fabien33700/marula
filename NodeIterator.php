@@ -43,7 +43,7 @@
         /**
          * The class' constructor.
          * @access public
-         * @param Marula\AbstractNode The node to browse
+         * @param AbstractNode The node to browse
          */
         public function __construct(AbstractNode &$subjectNode)
         {
@@ -55,7 +55,7 @@
         /**
          * The recursive method execute(), automatically called by __construct
          * @access protected
-         * @param Marula\AbstractNode The current node (null on the first iteration)
+         * @param AbstractNode The current node (null on the first iteration)
          */ 
         protected function execute(AbstractNode $currentNode = null)
         {

@@ -25,6 +25,8 @@
          *     add(Node $node)
          *     add($key, val)
          *
+         * @param AbstractNode|int $keyOrNode The node or the key of the new node to add.
+         * @param mixed $newVal The value for the new node to add.
          * @access public
          * @return The node just added
          */

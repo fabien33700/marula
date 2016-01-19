@@ -9,10 +9,8 @@
      */
     namespace Marula\Iterators;
 
-    use Marula\Iterators\BinaryNodeIterator,
-        Marula\Core\AbstractNode,
-        Marula\Core\BinaryNode,
-        Marula\Queue\Fifo;
+    use Marula\Core\AbstractNode,
+        Marula\Core\BinaryNode;
 
     /**
      * The BinaryNodeIterator class provides an iterator for all BinaryNode subclasses' instance. 
@@ -21,7 +19,8 @@
      *
      * @package Marula
      */
-    class BinaryIterator extends NodeIterator {
+    class BinaryIterator extends NodeIterator
+    {
         
         /**
          * Browsing method enum constants

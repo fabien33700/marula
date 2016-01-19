@@ -25,14 +25,14 @@
          * @var Fifo
          * @access protected
          */
-        protected  $_queue;
+        protected $_queue;
 
         /**
          * The node to browse.
          * @var AbstractNode
          * @access protected
          */
-        protected  $_subject;
+        protected $_subject;
         
         /**
          * The iterator's class constructor.

@@ -19,7 +19,7 @@
 
         /**
          * The queue that stacks the results as and when the iterator traverses the treenode.
-         * @var Marula\Queue\Fifo
+         * @var Fifo
          */
         protected $_stack;
 

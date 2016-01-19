@@ -17,7 +17,8 @@
      *
      * @package Marula
      */
-    class Node extends AbstractNode {
+    class Node extends AbstractNode
+    {
 
         /**
          * Add a sibling node to the current node.

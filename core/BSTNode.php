@@ -7,11 +7,9 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-	namespace Marula;
+	namespace Marula\Core;
 
-    use Marula\BinaryIndexedNode,
-        Marula\BinaryNodeIterator,
-        Marula\IterationMethod;
+    use Marula\Iterators\BinaryIterator;
 
     /**
      * The BSTNode class represents a BST node.
@@ -21,7 +19,7 @@
      *
      * @package Marula
      */
-    class BSTNode extends BinaryIndexedNode
+    class BSTNode extends BinaryNode
     {
         /**
          * Search recursively a node by its key into the BST.
@@ -33,7 +31,7 @@
             $treeRoot = $this->root();
             
             // Initializing a binary node iterator in in-fix search mode
-            $searchIterator = new BinaryNodeIterator($treeRoot, BinaryNodeIterator::M_INFIX);
+            $searchIterator = new BinaryIterator($treeRoot, BinaryIterator::IN_ORDER);
             
             // Scanning all the results, returning the first node matching
             foreach ($searchIterator->items() as $item)
@@ -43,18 +41,7 @@
             return false;
         }
 
-        /**
-         * {@inheritDoc}
-         * !! Overloaded method 
-         *   Indicate to not use addChild method in BSTNode.
-         * @param AbstractNode $childNode The child node to add.
-         */
-        public function addChild(AbstractNode $childNode)
-        {
-            trigger_error("Use insert() method instead of addChild() in BSTNode.", E_USER_NOTICE);
-            return false;
-        }
-        
+
         /**
          * Insert a new node with the key given as argument.
          * @param integer|array<integer>
@@ -84,13 +71,13 @@
                         if ($arg < $this->key())
                         {
                             if (!is_null($this->ls())) $this->ls()->insert($arg);
-                            else $this->setLs(new static($arg));
+                            else $this->changeLs(new static($arg));
                         }
                         // Right side
                         else if($arg > $this->key())
                         {
                             if (!is_null($this->rs())) $this->rs()->insert($arg);
-                            else $this->setRs(new static($arg));
+                            else $this->changeRs(new static($arg));
                         }
                         // Do nothing if equals keys
                         else {}

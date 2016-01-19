@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     /**
 	 * Marula Library, use easily treenodes in PHP !
@@ -7,11 +7,12 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-	namespace Marula;
+	namespace Marula\Iterators;
 
-    use Marula\NodeIterator,
-        Marula\BinaryNode,
-        Marula\Utils\Queue\Fifo;
+    use Marula\Iterators\BinaryNodeIterator,
+        Marula\Core\AbstractNode,
+        Marula\Core\BinaryNode,
+        Marula\Queue\Fifo;
 
     /**
      * The BinaryNodeIterator class provides an iterator for all BinaryNode subclasses' instance. 
@@ -20,43 +21,30 @@
      *
      * @package Marula
      */
-    class BinaryNodeIterator extends NodeIterator
-    {
-        /**
-         * Search method constants
-         */
-        const M_PREFIX = 0;
-        const M_INFIX  = 1;
-        const M_SUFFIX = 2;
-
-        /**
-         * The queue used to stack items while browsing
-         * @access protected
-         * @var Marula\Utils\Fifo
-         */
-        protected $_queue;
-
-        /**
-         * The subject node
-         * @access protected
-         * @var Marula\BinaryNode
-         */
-        protected $_subject;
-
-        /**
-         * The search method (prefix, infix, suffix)
-         * @access protected
-         * @var integer
-         */
-        protected $_method;
+    class BinaryIterator extends NodeIterator {
         
         /**
-         * {@inheritDoc}
-         * @param AbstractNode $subject The subject node
-         * @param integer $method The search method (M_PREFIX by default)
-         * Acts like NodeIterator's constructor, and checks if the subject is at least a binary node.
+         * Browsing method enum constants
          */
-        public function __construct(AbstractNode &$subjectNode, $method = self::M_PREFIX)
+        const PRE_ORDER  = 0;
+        const IN_ORDER   = 1;
+        const POST_ORDER = 2;
+
+        /**
+         * The browsing method (0 = pre-order, 1 = in-order, 2 = post-order).
+         * @var int
+         * @access protected
+         */
+        protected $_method = 0;
+
+
+        /**
+         * The iterator's class constructor.
+         * @access public
+         * @param BinaryNode $subjectNode The node to browse.
+         * @param int $method The browsing method.
+         */
+        public function __construct(AbstractNode $subjectNode, $method = self::PRE_ORDER)
         {
             if ($subjectNode instanceof BinaryNode)
             {
@@ -64,29 +52,18 @@
                 parent::__construct($subjectNode);
             }
             else
-                throw new \RuntimeException("BinaryNodeIterator needs an instance of BinaryNode or of its subclasses as subject.");
+                throw new \RuntimeException("BinaryIterator needs an instance of BinaryNode or of its subclasses as subject.");
         }
         
-        
         /**
-         * Accessor for the search method
+         * Accessor for the browsing method.
          * @access public
-         * @return integer
          */
-        public function method()
+        public final function method()
         {
             return $this->_method;
         }
 
-        /**
-         * Mutator for the search method
-         * @access public
-         * @param integer $method
-         */
-        public function setMethod($method)
-        {
-            $this->_method = $method;
-        }
 
         /**
          * {@inheritDoc}
@@ -105,15 +82,20 @@
             // when the method has just called itself
             else
             {
-                if ($this->method() === self::M_PREFIX) $this->_queue->put($currentNode);
+                if ($this->method() === self::PRE_ORDER) 
+                    $this->_queue->put($currentNode);
                 
                 if (!is_null($currentNode->ls())) $this->execute($currentNode->ls());
                 
-                if ($this->method() === self::M_INFIX) $this->_queue->put($currentNode);
+                if ($this->method() === self::IN_ORDER) 
+                    $this->_queue->put($currentNode);
                 
                 if (!is_null($currentNode->rs())) $this->execute($currentNode->rs());
                 
-                if ($this->method() === self::M_SUFFIX) $this->_queue->put($currentNode);
+                if ($this->method() === self::POST_ORDER)
+                    $this->_queue->put($currentNode);
             }
         }
+
+
     }

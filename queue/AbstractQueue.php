@@ -7,7 +7,7 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-    namespace Marula\Utils\Queue;
+    namespace Marula\Queue;
     
     /**
      * The AbstractQueue class provides an implementation of queue concept for PHP
@@ -16,12 +16,13 @@
      */
     abstract class AbstractQueue implements Queue
     {
+
         /**
-         * The stack container for the queue
-         * @var array
+         * The queue that stacks the results as and when the iterator traverses the treenode.
+         * @var Marula\Queue\Fifo
          */
         protected $_stack;
-    
+
         /**
          * The class' constructor.
          * @access public
@@ -31,7 +32,8 @@
             // stands for reset and initialization
             $this->clear();
         }
-        
+
+
         /**
          * {@inheritDoc}
          */
@@ -39,34 +41,38 @@
         {
             return (count($this->_stack) === 0);
         }
-        
+
+
         /**
-         * Method to know if the param object ($obj) is into the queue or not.
+         * Indicate whether the var as argument is in the stack.
          * @access public
-         * @param $obj The object to check
+         * @param $obj
          * @return boolean
          */
         public function isInto($obj)
         {
             return in_array($obj, $this->_stack);
         }
-        
+
+
         /**
-         * Reset the stack by assigning an empty array
+         * Clear the queue.
          * @access public
          */
         public function clear()
         {
             $this->_stack = [];
         }
-        
+
+
         /**
-         * Return a generator for the stack items.
-         * @return generator
+         * Return all the queue items as a generator.
          */
         public function generator()
         {
             while (!$this->isEmpty()) 
                 yield $this->get();
         } 
+
+
     }

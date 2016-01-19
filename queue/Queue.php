@@ -7,7 +7,7 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-    namespace Marula\Utils\Queue;
+    namespace Marula\Queue;
 
     /**
      * The Queue interface defines the standard behaviour of all subclasses of AbstractQueue.

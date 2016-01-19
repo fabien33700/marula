@@ -7,23 +7,25 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-    namespace Marula\Utils\Queue;
+    namespace Marula\Queue;
 
     /**
-     * The Lifo class provides an implementation of a Last-in First-out queue.
+     * The Fifo class provides an implementation of a First-in First-out queue.
      *
      * @package Marula
     */
-    class Lifo extends AbstractQueue
-    {
+    class Fifo extends AbstractQueue
+    {     
+    
         /**
          * {@inheritDoc}
          */
         public function get()
         {
-            return array_shift($this->_stack);
+            return array_pop($this->_stack);
         }
-        
+
+
         /**
          * {@inheritDoc}
          * @param mixed $obj Object to put into the queue.
@@ -32,4 +34,6 @@
         {
             array_unshift($this->_stack, $obj);
         }
+
+
     }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     /**
 	 * Marula Library, use easily treenodes in PHP !
@@ -7,56 +7,51 @@
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
-	namespace Marula;
-
-    use Marula\Utils\Queue\Fifo;
+	namespace Marula\Iterators;
+    
+    use Marula\Queue\Fifo,
+        Marula\Core\AbstractNode;
 
     /**
      * The NodeIterator class provides an iterator for all AbstractNode subclasses' instance. 
-     *   e.g. Usage :
-     *   $iterator = new NodeIterator($node);
-     *   
-     *   foreach ($iterator->$items() as $item)
-     *   {
-     *      // $item is the current item (AbstractNode inherited) pointed by the iterator.
-     *      echo $item->key();
-     *   }
      *
      * @package Marula
      */
-    class NodeIterator
+    class NodeIterator 
     {
-        /**
-         * The queue used to stack items while browsing
-         * @access protected
-         * @var Marula\Utils\Fifo
-         */
-        protected $_queue;
 
         /**
-         * The subject node
+         * The queue that stacks the results as and when the iterator traverses the treenode.
+         * @var Fifo
          * @access protected
-         * @var Marula\AbstractNode
          */
-        protected $_subject;
+        protected  $_queue;
 
         /**
-         * The class' constructor.
+         * The node to browse.
+         * @var AbstractNode
+         * @access protected
+         */
+        protected  $_subject;
+        
+        /**
+         * The iterator's class constructor.
          * @access public
-         * @param AbstractNode The node to browse
+         * @param AbstractNode $subjectNode The node to browse.
          */
-        public function __construct(AbstractNode &$subjectNode)
+        public function __construct(AbstractNode $subjectNode)
         {
             $this->_subject = $subjectNode;
             $this->_queue = new Fifo();
             $this->execute();
         }
 
+
         /**
-         * The recursive method execute(), automatically called by __construct
+         * The recursive method to browse the subject node, automatically called by the constructor.
          * @access protected
-         * @param AbstractNode The current node (null on the first iteration)
-         */ 
+         * @param AbstractNode $currentNode The current node (null on the first iteration).
+         */
         protected function execute(AbstractNode $currentNode = null)
         {
             // when the method has been just called by __construct()
@@ -74,27 +69,29 @@
             else
             {
                 // for each child of the current node
-                foreach ($currentNode->children() as $child)
+                foreach ($currentNode->siblings() as $sibling)
                 {
                     // if not already in the queue, add to it
-                    if (!$this->_queue->isInto($child))
-                        $this->_queue->put($child);
+                    if (!$this->_queue->isInto($sibling))
+                        $this->_queue->put($sibling);
 
                     // if current child has children itself, the method recursively called itself
-                    if ($child->isBranch())
-                        $this->execute($child);
+                    if ($sibling->isBranch())
+                        $this->execute($sibling);
                 }
             }
         }
 
+
         /**
-         * Return a generator of the result queue.
+         * Return all the found items as a generator.
          * @access public
-         * @return generator
-         */ 
+         */
         public final function items()
         {
             // return a queue's generator
             return $this->_queue->generator();
         }
+
+
     }

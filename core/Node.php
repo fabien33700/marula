@@ -94,6 +94,6 @@
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $item->key(), $item->value());
 
             // Return dump 
-            return $result;
+            return htmlspecialchars($result);
         }
     }

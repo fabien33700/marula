@@ -79,18 +79,27 @@
             }
         }
 
+
+        /**
+         * Get an iterator for the current node.
+         * @return NodeIterator 
+         */
+        public function iterator()
+        {
+            $result = new NodeIterator($this);
+            return $result->items();
+        }
+
+
         /**
          * Magic method for node representation
          */
         public function __toString()
         {
             $result = "";
-            
-            // Invoke a new NodeIterator
-            $iterator = new NodeIterator($this);  
    
             // Browse the current node
-            foreach ($iterator->items() as $item)
+            foreach ($this->iterator() as $item)
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $item->key(), $item->value());
 
             // Return dump 

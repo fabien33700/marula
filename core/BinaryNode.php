@@ -102,18 +102,27 @@
 
 
         /**
+         * Get an iterator for the current node.
+         * @param $method int The iteration method (0 = pre-order, 1 = in-order, 2 = post-order).
+         * @return NodeIterator 
+         */
+        public function iterator($method = BinaryIterator::PRE_ORDER)
+        {
+            $result = new BinaryIterator($this, $method);
+            return $result->items();
+        }
+
+
+        /**
          * Magic method for node representation
          */
         public function __toString()
         {
             $result = "";
             $sides = ['--', '<-', '->'];
-            
-            // Invoke a new NodeIterator
-            $iterator = new BinaryIterator($this);  
    
             // Browse the current node
-            foreach ($iterator->items() as $item)
+            foreach ($this->iterator() as $item)
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $sides[$item->side()], $item->key(), $item->value());
 
             // Return dump 

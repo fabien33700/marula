@@ -1,33 +1,40 @@
 <?php
 
-    /**
-     * Marula Library, use easily treenodes in PHP !
-     *   coded with and for PHP 5.6+
-     * Treenodes algorithm implementation for PHP 
-     *   (first of all, for personnal learning and skill improving purposes)
-     * @author Fabien Le Houëdec (git: fabien33700) <fabien.lehouedec@gmail.com>
-     */
-     
-    /**
-     * The PSR-4 compliant loaded for Marula Library.
-     */
+    namespace Marula;
 
-    define('LIB_PREFIX', "Marula");
-
-    define('BASEDIR', dirname(__DIR__));
     define('DS', DIRECTORY_SEPARATOR);
     define('NS', "\\");
 
-    spl_autoload_register(function ($class)
+    class Autoload 
     {
-        $classArray  = explode(NS, $class);
-        $className   = array_pop($classArray);
-        $classPrefix = implode(NS, $classArray);
+        protected static $vendorDir;
+        
+        static public function register()
+        {   
+            self::$vendorDir = dirname(dirname(__FILE__));
+            
+            spl_autoload_register(array(__CLASS__, 'autoload'));
+        }
+        
+        static public function autoload($class)
+        {
+            if (false === strpos($class, __NAMESPACE__ . NS)) return;
+            
+            $classParts    = explode(NS, $class);
+            $className     = array_pop($classParts);
+            $relativeNS    = strtolower(implode(DS, $classParts));
+            
+            $classPath     = self::$vendorDir . DS . $relativeNS . DS . $className . '.php';
+            
+            if (file_exists($classPath))
+            {
+                require($classPath);
+                return true;
+            }
+            else
+                return false;
+        }
+    }
 
-        if (substr($classPrefix, 0, strlen(LIB_PREFIX)) !== LIB_PREFIX) return;
-
-        $classFilename = BASEDIR . DS . $classPrefix . DS . $className . '.php';
-
-        if (file_exists($classFilename))
-            require $classFilename;
-    });
+    
+?>

@@ -3,12 +3,12 @@
     /**
      * Marula Library, use easily treenodes in PHP !
      *   coded with and for PHP 5.6+
-     * Treenodes algorithm implementation for PHP 
+     * Treenodes algorithm implementation for PHP
      *   (first of all, for personnal learning and skill improving purposes)
      * @author Fabien LH (git: fabien33700) <fabien DOT lehouedec AT gmail DOT com>
      */
     namespace Marula\Core;
-    
+
     use Marula\Iterators\BinaryIterator,
         Marula\Core\BinaryNode,
         Marula\Core\AbstractNode;
@@ -24,19 +24,19 @@
      */
     class BinaryNode extends AbstractNode
     {
-        
+
         /**
-         * Format strings constants for dumping 
+         * Format strings constants for dumping
          */
         const DUMP_NODE_STR = "%s%s[%s]: %s\n";
-        
+
         /**
          * Binary node constants
          */
         const LEFT  = 1;
         const RIGHT = 2;
-        
-        
+
+
         /**
          * Get the left sibling.
          * @access public
@@ -53,12 +53,12 @@
          * @access public
          * @return BinaryNode
          */
-        public final function rs() 
+        public final function rs()
         {
             return (isset($this->_siblings[self::RIGHT])) ? $this->_siblings[self::RIGHT] : null;
         }
-        
-        
+
+
         /**
          * Indicate whether the current node is the left or the right sibling of its parent.
          *   Return -1 in other cases
@@ -66,11 +66,10 @@
          */
         public final function side()
         {
-            if (!$this->isRoot()) 
+            if (!$this->isRoot())
             {
-                
                 if ($this->parent()->ls() === $this) return self::LEFT;
-                if ($this->parent()->rs() === $this) return self::RIGHT; 
+                if ($this->parent()->rs() === $this) return self::RIGHT;
             }
 
             return 0;
@@ -102,21 +101,30 @@
 
 
         /**
+         * Get an iterator for the current node.
+         * @param $method int The iteration method (0 = pre-order, 1 = in-order, 2 = post-order).
+         * @return NodeIterator
+         */
+        public function iterator($method = BinaryIterator::PRE_ORDER)
+        {
+            $result = new BinaryIterator($this, $method);
+            return $result->items();
+        }
+
+
+        /**
          * Magic method for node representation
          */
         public function __toString()
         {
             $result = "";
             $sides = ['--', '<-', '->'];
-            
-            // Invoke a new NodeIterator
-            $iterator = new BinaryIterator($this);  
-   
+
             // Browse the current node
-            foreach ($iterator->items() as $item)
+            foreach ($this->iterator() as $item)
                 $result .= sprintf(self::DUMP_NODE_STR, str_repeat(self::DUMP_NODE_TAB, $item->depth()-1), $sides[$item->side()], $item->key(), $item->value());
 
-            // Return dump 
+            // Return dump
             return htmlspecialchars($result);
         }
 
